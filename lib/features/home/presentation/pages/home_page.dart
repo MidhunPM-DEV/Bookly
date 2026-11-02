@@ -131,13 +131,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                 else ...[
-                  const SliverToBoxAdapter(child: SizedBox(height: 18)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
                   SliverToBoxAdapter(
                     child: _HomeSpotlightCard(
                       onExplore: () => _openBusiness(HomeMockData.nearby.id),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 26)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
                   SliverToBoxAdapter(
                     child: CategoryChips(
                       categories: HomeMockData.categories,
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                           setState(() => _selectedCategory = index),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 22)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 28)),
                   SliverToBoxAdapter(
                     child: SectionHeader(
                       title: 'Nearby',
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                       onView: () => _openBusiness(HomeMockData.nearby.id),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 26)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 30)),
                   SliverToBoxAdapter(
                     child: SectionHeader(
                       title: 'Popular near you',
@@ -220,7 +220,7 @@ class _HomeSpotlightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.fromLTRB(20, 20, 14, 14),
+      padding: const EdgeInsets.fromLTRB(20, 18, 14, 14),
       decoration: BoxDecoration(
         color: AppColors.ink,
         borderRadius: BorderRadius.circular(26),
@@ -295,13 +295,13 @@ class _HomeSpotlightCard extends StatelessWidget {
               ),
               const SizedBox(height: 22),
               const SizedBox(
-                width: 260,
+                width: 250,
                 child: Text(
-                  'Make time for what makes you feel good.',
+                  'Your next good moment starts here.',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 23,
-                    height: 1.12,
+                    fontSize: 22,
+                    height: 1.16,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
                   ),
@@ -309,19 +309,19 @@ class _HomeSpotlightCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Discover trusted places around you and book in a few taps.',
+                'Find trusted places around you and book with confidence.',
                 style: TextStyle(
                   color: Colors.white70,
-                  fontSize: 12.5,
-                  height: 1.4,
+                  fontSize: 12,
+                  height: 1.45,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: onExplore,
-                icon: const Icon(Icons.arrow_forward_rounded, size: 17),
-                label: const Text('Explore nearby'),
+                icon: const Icon(Icons.explore_outlined, size: 17),
+                label: const Text('Explore places'),
                 style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AppColors.ink,
