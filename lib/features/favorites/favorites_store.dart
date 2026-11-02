@@ -5,7 +5,9 @@ class FavoritesStore extends ChangeNotifier {
 
   static final instance = FavoritesStore._();
 
-  final Set<String> _ids = {'urban-studio', 'the-groom-lab', 'aura-wellness'};
+  final Set<String> _ids = {};
+
+  int get count => _ids.length;
 
   bool contains(String id) => _ids.contains(id);
 

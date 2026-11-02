@@ -1,6 +1,8 @@
 import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/core/theme/app_colors.dart';
 import 'package:bookly/features/auth/auth_store.dart';
+import 'package:bookly/features/bookings/booking_store.dart';
+import 'package:bookly/features/favorites/favorites_store.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,10 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: AuthStore.instance,
+      animation: Listenable.merge([
+        AuthStore.instance,
+        BookingStore.instance,
+        FavoritesStore.instance,
+      ]),
       builder: (context, _) {
         final name = AuthStore.instance.userName ?? 'Bookly user';
         final email = AuthStore.instance.userEmail ?? 'No email available';
+        final bookingCount = BookingStore.instance.bookings.length;
+        final favoriteCount = FavoritesStore.instance.count;
         return Scaffold(
           backgroundColor: AppColors.background,
           body: SafeArea(
@@ -125,19 +133,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _StatCard(
                       icon: Icons.calendar_month_outlined,
-                      value: '12',
+                      value: '$bookingCount',
                       label: 'Bookings',
                     ),
                     const SizedBox(width: 10),
                     _StatCard(
                       icon: Icons.favorite_border_rounded,
-                      value: '3',
+                      value: '$favoriteCount',
                       label: 'Favorites',
                     ),
                     const SizedBox(width: 10),
                     _StatCard(
                       icon: Icons.star_outline_rounded,
-                      value: '4.9',
+                      value: '—',
                       label: 'Rating',
                     ),
                   ],
@@ -169,8 +177,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     _ProfileTile(
                       icon: Icons.location_on_outlined,
-                      title: 'Kozhikode, Kerala',
-                      subtitle: 'Your preferred location',
+                      title: 'Location not set',
+                      subtitle: 'Choose your preferred location',
                       onTap: () => _message('Location picker coming soon'),
                     ),
                   ],

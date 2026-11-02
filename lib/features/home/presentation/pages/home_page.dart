@@ -3,7 +3,6 @@ import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/features/auth/auth_store.dart';
 import 'package:bookly/features/home/data/models/home_models.dart';
 import 'package:bookly/features/favorites/favorites_store.dart';
-import 'package:bookly/features/home/presentation/widgets/book_again_card.dart';
 import 'package:bookly/features/home/presentation/widgets/category_chips.dart';
 import 'package:bookly/features/home/presentation/widgets/home_header.dart';
 import 'package:bookly/features/home/presentation/widgets/home_search_bar.dart';
@@ -103,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                     dateLabel: _dateLabel,
                     greeting: _greeting,
                     userName: AuthStore.instance.userName ?? 'there',
-                    location: HomeMockData.location,
+                    location: 'Location not set',
                     onChangeLocation: () => _snack('Change location'),
                     onNotifications: () => _snack('Notifications'),
                     onProfile: () => _snack('Profile'),
@@ -192,14 +191,6 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                       ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 26)),
-                  SliverToBoxAdapter(
-                    child: BookAgainCard(
-                      visit: HomeMockData.recentVisit,
-                      onRebook: () =>
-                          _openBusiness(HomeMockData.recentVisit.businessId),
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 28)),

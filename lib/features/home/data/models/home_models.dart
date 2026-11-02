@@ -102,8 +102,6 @@ class HomeCategory {
 }
 
 abstract final class HomeMockData {
-  static const location = 'Kozhikode, Kerala';
-
   static const categories = [
     HomeCategory(label: 'Salon', dot: true),
     HomeCategory(label: 'Barber'),
@@ -270,15 +268,4 @@ abstract final class HomeMockData {
     }
     return null;
   }
-
-  static const recentVisit = RecentVisit(
-    businessId: 'urban-studio',
-    salonName: 'Urban Studio',
-    service: 'Classic Cut',
-    staffName: 'Arjun',
-    lastVisited: 'Oct 3',
-    price: 450,
-    staffImageUrl:
-        'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=400&q=80',
-  );
 }
