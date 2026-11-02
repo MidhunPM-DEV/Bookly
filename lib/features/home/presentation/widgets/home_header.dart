@@ -89,7 +89,7 @@ class HomeHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$greeting, $userName',
+                      '$greeting, $userName!',
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,

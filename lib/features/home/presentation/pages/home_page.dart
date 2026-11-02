@@ -46,7 +46,14 @@ class _HomePageState extends State<HomePage> {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning';
     if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
+    if (hour < 21) return 'Good evening';
+    return 'Good night';
+  }
+
+  String get _displayName {
+    final name = AuthStore.instance.userName?.trim();
+    if (name == null || name.isEmpty) return 'there';
+    return name.split(RegExp(r'\s+')).first;
   }
 
   @override
@@ -101,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                   child: HomeHeader(
                     dateLabel: _dateLabel,
                     greeting: _greeting,
-                    userName: AuthStore.instance.userName ?? 'there',
+                    userName: _displayName,
                     location: 'Location not set',
                     onChangeLocation: () => _snack('Change location'),
                     onNotifications: () => _snack('Notifications'),
