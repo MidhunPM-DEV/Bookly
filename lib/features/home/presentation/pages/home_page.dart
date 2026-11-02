@@ -131,6 +131,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                 else ...[
+                  const SliverToBoxAdapter(child: SizedBox(height: 18)),
+                  SliverToBoxAdapter(
+                    child: _HomeSpotlightCard(
+                      onExplore: () => _openBusiness(HomeMockData.nearby.id),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 26)),
                   SliverToBoxAdapter(
                     child: CategoryChips(
                       categories: HomeMockData.categories,
@@ -143,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                   SliverToBoxAdapter(
                     child: SectionHeader(
                       title: 'Nearby',
-                      action: 'See all (18)',
+                      action: 'See all (${HomeMockData.catalog.length})',
                       onAction: () => _snack('See all nearby'),
                     ),
                   ),
@@ -199,6 +206,141 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _HomeSpotlightCard extends StatelessWidget {
+  const _HomeSpotlightCard({required this.onExplore});
+
+  final VoidCallback onExplore;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 14, 14),
+      decoration: BoxDecoration(
+        color: AppColors.ink,
+        borderRadius: BorderRadius.circular(26),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1A111111),
+            blurRadius: 18,
+            offset: Offset(0, 9),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            right: -24,
+            top: -34,
+            child: Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                color: AppColors.lime.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 42,
+            bottom: -62,
+            child: Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.lime.withValues(alpha: 0.12),
+                  width: 18,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.lime,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      'BOOK YOUR MOMENT',
+                      style: TextStyle(
+                        color: AppColors.ink,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.auto_awesome_rounded,
+                    color: AppColors.lime,
+                    size: 22,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 22),
+              const SizedBox(
+                width: 260,
+                child: Text(
+                  'Make time for what makes you feel good.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    height: 1.12,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Discover trusted places around you and book in a few taps.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12.5,
+                  height: 1.4,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 18),
+              FilledButton.icon(
+                onPressed: onExplore,
+                icon: const Icon(Icons.arrow_forward_rounded, size: 17),
+                label: const Text('Explore nearby'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColors.ink,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 11,
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
