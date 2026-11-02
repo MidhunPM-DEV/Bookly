@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                   const SliverToBoxAdapter(child: SizedBox(height: 12)),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 236,
+                      height: 292,
                       child: ListView.separated(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         scrollDirection: Axis.horizontal,
