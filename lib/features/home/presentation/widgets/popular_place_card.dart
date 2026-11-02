@@ -27,12 +27,12 @@ class PopularPlaceCard extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(24),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x12000000),
-              blurRadius: 14,
-              offset: Offset(0, 6),
+              color: Color(0x16000000),
+              blurRadius: 18,
+              offset: Offset(0, 8),
             ),
           ],
         ),
@@ -44,12 +44,21 @@ class PopularPlaceCard extends StatelessWidget {
                 top: Radius.circular(22),
               ),
               child: SizedBox(
-                height: 128,
+                height: 142,
                 width: double.infinity,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
                     RemoteImage(url: place.imageUrl),
+                    const DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, Color(0xB3000000)],
+                        ),
+                      ),
+                    ),
                     Positioned(
                       left: 10,
                       bottom: 10,
@@ -75,63 +84,32 @@ class PopularPlaceCard extends StatelessWidget {
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.92),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.star_rounded,
-                              size: 14,
-                              color: Color(0xFFF5C518),
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              '${place.rating}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 12,
-                              ),
-                            ),
-                            if (onFavorite != null)
-                              Positioned(
-                                top: 10,
-                                left: 10,
-                                child: GestureDetector(
-                                  onTap: onFavorite,
-                                  child: CircleAvatar(
-                                    radius: 16,
-                                    backgroundColor: Colors.white.withValues(
-                                      alpha: 0.92,
-                                    ),
-                                    child: Icon(
-                                      isFavorite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: isFavorite
-                                          ? Colors.red
-                                          : AppColors.ink,
-                                      size: 17,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
+                      child: GestureDetector(
+                        onTap: onFavorite,
+                        child: CircleAvatar(
+                          radius: 17,
+                          backgroundColor: Colors.white.withValues(alpha: 0.94),
+                          child: Icon(
+                            isFavorite
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border_rounded,
+                            color: isFavorite ? Colors.red : AppColors.ink,
+                            size: 18,
+                          ),
                         ),
                       ),
+                    ),
+                    Positioned(
+                      right: 10,
+                      bottom: 10,
+                      child: _RatingPill(rating: place.rating),
                     ),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+              padding: const EdgeInsets.fromLTRB(15, 14, 15, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -147,7 +125,7 @@ class PopularPlaceCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     place.subtitle,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: AppColors.mutedDark,
@@ -155,36 +133,54 @@ class PopularPlaceCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 13),
                   Row(
                     children: [
-                      Text(
-                        'From ₹${place.startingPrice}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (place.slotsOpen)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.limeSoft,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            'Slots Open',
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'STARTING FROM',
                             style: TextStyle(
-                              color: Color(0xFF4A7A12),
+                              color: AppColors.muted,
+                              fontSize: 9,
                               fontWeight: FontWeight.w800,
-                              fontSize: 11,
+                              letterSpacing: 0.7,
                             ),
                           ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '₹${place.startingPrice}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
                         ),
+                        decoration: BoxDecoration(
+                          color: place.slotsOpen
+                              ? AppColors.limeSoft
+                              : AppColors.searchFill,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          place.slotsOpen ? 'Available today' : 'View details',
+                          style: TextStyle(
+                            color: place.slotsOpen
+                                ? const Color(0xFF4A7A12)
+                                : AppColors.mutedDark,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 10.5,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -192,6 +188,33 @@ class PopularPlaceCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _RatingPill extends StatelessWidget {
+  const _RatingPill({required this.rating});
+
+  final double rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.star_rounded, size: 14, color: Color(0xFFF5C518)),
+          const SizedBox(width: 3),
+          Text(
+            '$rating',
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 11),
+          ),
+        ],
       ),
     );
   }
