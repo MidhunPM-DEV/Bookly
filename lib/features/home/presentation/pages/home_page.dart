@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bookly/core/theme/app_colors.dart';
 import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/features/auth/auth_store.dart';
@@ -25,10 +27,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _searchController = TextEditingController();
   final _searchFocus = FocusNode();
+  Timer? _clockTimer;
 
   int _selectedCategory = 0;
   String _query = '';
   SearchFilters _filters = const SearchFilters();
+
+  @override
+  void initState() {
+    super.initState();
+    _clockTimer = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
 
   bool get _isSearching => _query.trim().isNotEmpty || _filters.isActive;
 
@@ -58,6 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _clockTimer?.cancel();
     _searchController.dispose();
     _searchFocus.dispose();
     super.dispose();
