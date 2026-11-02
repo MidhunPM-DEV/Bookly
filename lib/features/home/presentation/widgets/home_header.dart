@@ -37,7 +37,11 @@ class HomeHeader extends StatelessWidget {
                   color: AppColors.lime,
                   borderRadius: BorderRadius.circular(7),
                 ),
-                child: const Icon(Icons.auto_awesome, size: 16, color: AppColors.ink),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  size: 16,
+                  color: AppColors.ink,
+                ),
               ),
               const SizedBox(width: 8),
               const Text(
@@ -51,10 +55,16 @@ class HomeHeader extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: onProfile,
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 18,
-                  backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+                  backgroundColor: AppColors.lime,
+                  foregroundColor: AppColors.ink,
+                  child: Text(
+                    _initials(userName),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
@@ -97,14 +107,21 @@ class HomeHeader extends StatelessWidget {
                   side: const BorderSide(color: Color(0xFFE6E3DE)),
                   padding: const EdgeInsets.all(10),
                 ),
-                icon: const Icon(Icons.notifications_none_rounded, color: AppColors.ink),
+                icon: const Icon(
+                  Icons.notifications_none_rounded,
+                  color: AppColors.ink,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 14),
           Row(
             children: [
-              const Icon(Icons.location_on, size: 18, color: AppColors.accentGreen),
+              const Icon(
+                Icons.location_on,
+                size: 18,
+                color: AppColors.accentGreen,
+              ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
@@ -132,5 +149,12 @@ class HomeHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _initials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts.first.isEmpty) return '?';
+    if (parts.length == 1) return parts.first[0].toUpperCase();
+    return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
 }

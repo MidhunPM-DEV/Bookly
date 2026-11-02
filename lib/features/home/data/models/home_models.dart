@@ -53,7 +53,11 @@ class PopularPlace {
   final bool slotsOpen;
   final List<String> tags;
 
-  bool matches(String query, {Set<String> categories = const {}, bool slotsOpenOnly = false}) {
+  bool matches(
+    String query, {
+    Set<String> categories = const {},
+    bool slotsOpenOnly = false,
+  }) {
     if (slotsOpenOnly && !slotsOpen) return false;
     if (categories.isNotEmpty && !categories.contains(category)) return false;
 
@@ -98,7 +102,6 @@ class HomeCategory {
 }
 
 abstract final class HomeMockData {
-  static const userName = 'Alex';
   static const location = 'Kozhikode, Kerala';
 
   static const categories = [

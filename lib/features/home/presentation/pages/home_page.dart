@@ -1,5 +1,6 @@
 import 'package:bookly/core/theme/app_colors.dart';
 import 'package:bookly/core/router/app_routes.dart';
+import 'package:bookly/features/auth/auth_store.dart';
 import 'package:bookly/features/home/data/models/home_models.dart';
 import 'package:bookly/features/favorites/favorites_store.dart';
 import 'package:bookly/features/home/presentation/widgets/book_again_card.dart';
@@ -91,14 +92,17 @@ class _HomePageState extends State<HomePage> {
         child: ScrollConfiguration(
           behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
           child: AnimatedBuilder(
-            animation: FavoritesStore.instance,
+            animation: Listenable.merge([
+              FavoritesStore.instance,
+              AuthStore.instance,
+            ]),
             builder: (context, _) => CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: HomeHeader(
                     dateLabel: _dateLabel,
                     greeting: _greeting,
-                    userName: HomeMockData.userName,
+                    userName: AuthStore.instance.userName ?? 'there',
                     location: HomeMockData.location,
                     onChangeLocation: () => _snack('Change location'),
                     onNotifications: () => _snack('Notifications'),
