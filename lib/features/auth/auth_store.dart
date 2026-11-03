@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,6 +18,7 @@ class AuthStore extends ChangeNotifier {
   bool _isSignedIn = false;
   String? _name;
   String? _email;
+  StreamSubscription<User?>? _authSubscription;
 
   bool get isSignedIn => _isSignedIn;
   String? get userName => _name;
@@ -23,8 +26,8 @@ class AuthStore extends ChangeNotifier {
 
   Future<void> initialize() async {
     await _googleSignIn.initialize();
-    final user = _auth.currentUser;
-    await _syncUser(user);
+    await _syncUser(_auth.currentUser);
+    _authSubscription ??= _auth.authStateChanges().listen(_syncUser);
   }
 
   Future<String?> register({
@@ -80,10 +83,6 @@ class AuthStore extends ChangeNotifier {
 
   Future<void> signOut() async {
     await Future.wait([_auth.signOut(), _googleSignIn.signOut()]);
-    _isSignedIn = false;
-    _name = null;
-    _email = null;
-    notifyListeners();
   }
 
   Future<void> _syncUser(User? user) async {

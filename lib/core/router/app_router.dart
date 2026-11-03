@@ -18,7 +18,7 @@ abstract final class AppRouter {
   static final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     refreshListenable: AuthStore.instance,
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.login,
     redirect: (context, state) {
       final isLogin = state.matchedLocation == AppRoutes.login;
       final isCreateAccount = state.matchedLocation == AppRoutes.createAccount;
