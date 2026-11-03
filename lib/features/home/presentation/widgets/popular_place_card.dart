@@ -136,48 +136,55 @@ class PopularPlaceCard extends StatelessWidget {
                   const SizedBox(height: 13),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'STARTING FROM',
-                            style: TextStyle(
-                              color: AppColors.muted,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.7,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'STARTING FROM',
+                              style: TextStyle(
+                                color: AppColors.muted,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.7,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '₹${place.startingPrice}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15,
+                            const SizedBox(height: 2),
+                            Text(
+                              '₹${place.startingPrice}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: place.slotsOpen
-                              ? AppColors.limeSoft
-                              : AppColors.searchFill,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          place.slotsOpen ? 'Available today' : 'View details',
-                          style: TextStyle(
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
                             color: place.slotsOpen
-                                ? const Color(0xFF4A7A12)
-                                : AppColors.mutedDark,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 10.5,
+                                ? AppColors.limeSoft
+                                : AppColors.searchFill,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            place.slotsOpen ? 'Open today' : 'Details',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: place.slotsOpen
+                                  ? const Color(0xFF4A7A12)
+                                  : AppColors.mutedDark,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 9.5,
+                            ),
                           ),
                         ),
                       ),
