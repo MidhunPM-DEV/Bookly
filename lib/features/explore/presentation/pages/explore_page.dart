@@ -141,7 +141,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    mainAxisExtent: 300,
+                    mainAxisExtent: 320,
                   ),
                 ),
               ),
