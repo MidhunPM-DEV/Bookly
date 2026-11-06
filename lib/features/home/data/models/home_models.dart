@@ -38,6 +38,7 @@ class PopularPlace {
     required this.category,
     required this.rating,
     required this.startingPrice,
+    this.reviewCountLabel = '120+',
     this.slotsOpen = false,
     this.tags = const [],
   });
@@ -50,6 +51,7 @@ class PopularPlace {
   final String category;
   final double rating;
   final int startingPrice;
+  final String reviewCountLabel;
   final bool slotsOpen;
   final List<String> tags;
 
@@ -103,11 +105,10 @@ class HomeCategory {
 
 abstract final class HomeMockData {
   static const categories = [
-    HomeCategory(label: 'Salon', dot: true),
-    HomeCategory(label: 'Barber'),
-    HomeCategory(label: 'Fitness'),
-    HomeCategory(label: 'Clinic'),
+    HomeCategory(label: 'Clinics'),
+    HomeCategory(label: 'Salons', dot: true),
     HomeCategory(label: 'Spa'),
+    HomeCategory(label: 'Style'),
   ];
 
   static const nearby = NearbySalon(

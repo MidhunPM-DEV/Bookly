@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bookly/core/theme/app_colors.dart';
 import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/features/auth/auth_store.dart';
@@ -27,19 +25,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _searchController = TextEditingController();
   final _searchFocus = FocusNode();
-  Timer? _clockTimer;
 
   int _selectedCategory = 0;
   String _query = '';
   SearchFilters _filters = const SearchFilters();
-
-  @override
-  void initState() {
-    super.initState();
-    _clockTimer = Timer.periodic(const Duration(minutes: 1), (_) {
-      if (mounted) setState(() {});
-    });
-  }
 
   bool get _isSearching => _query.trim().isNotEmpty || _filters.isActive;
 
@@ -56,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   String get _greeting {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
+    if (hour < 16) return 'Good afternoon';
     if (hour < 21) return 'Good evening';
     return 'Good night';
   }
@@ -69,7 +58,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _clockTimer?.cancel();
     _searchController.dispose();
     _searchFocus.dispose();
     super.dispose();
@@ -168,8 +156,8 @@ class _HomePageState extends State<HomePage> {
                   const SliverToBoxAdapter(child: SizedBox(height: 28)),
                   SliverToBoxAdapter(
                     child: SectionHeader(
-                      title: 'Nearby',
-                      action: 'See all (${HomeMockData.catalog.length})',
+                      title: 'Nearby services',
+                      action: 'See all',
                       onAction: () => _snack('See all nearby'),
                     ),
                   ),
@@ -189,35 +177,34 @@ class _HomePageState extends State<HomePage> {
                   const SliverToBoxAdapter(child: SizedBox(height: 30)),
                   SliverToBoxAdapter(
                     child: SectionHeader(
-                      title: 'Popular near you',
+                      title: 'Recommended for you',
                       action: 'Explore',
                       onAction: () => _snack('Explore popular'),
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 292,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: HomeMockData.popular.length,
-                        separatorBuilder: (_, _) => const SizedBox(width: 12),
-                        itemBuilder: (context, index) {
-                          final place = HomeMockData.popular[index];
-                          return PopularPlaceCard(
-                            place: place,
-                            width: index == 0 ? 248 : 210,
-                            onTap: () => _openBusiness(place.id),
-                            isFavorite: FavoritesStore.instance.contains(
-                              place.id,
-                            ),
-                            onFavorite: () =>
-                                FavoritesStore.instance.toggle(place.id),
-                          );
-                        },
-                      ),
-                    ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final place = HomeMockData.popular[index];
+                      return Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          20,
+                          index == 0 ? 0 : 12,
+                          20,
+                          index == HomeMockData.popular.length - 1 ? 0 : 0,
+                        ),
+                        child: PopularPlaceCard(
+                          place: place,
+                          width: double.infinity,
+                          onTap: () => _openBusiness(place.id),
+                          isFavorite: FavoritesStore.instance.contains(
+                            place.id,
+                          ),
+                          onFavorite: () =>
+                              FavoritesStore.instance.toggle(place.id),
+                        ),
+                      );
+                    }, childCount: HomeMockData.popular.length),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 28)),
                 ],
@@ -260,7 +247,7 @@ class _HomeSpotlightCard extends StatelessWidget {
               width: 140,
               height: 140,
               decoration: BoxDecoration(
-                color: AppColors.lime.withValues(alpha: 0.12),
+                color: AppColors.limeSoft.withValues(alpha: 0.16),
                 shape: BoxShape.circle,
               ),
             ),
@@ -273,7 +260,7 @@ class _HomeSpotlightCard extends StatelessWidget {
               height: 130,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.lime.withValues(alpha: 0.12),
+                  color: AppColors.limeSoft.withValues(alpha: 0.18),
                   width: 18,
                 ),
                 shape: BoxShape.circle,
@@ -291,7 +278,7 @@ class _HomeSpotlightCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.lime,
+                      color: AppColors.limeSoft,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
@@ -307,7 +294,7 @@ class _HomeSpotlightCard extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     Icons.auto_awesome_rounded,
-                    color: AppColors.lime,
+                    color: AppColors.limeSoft,
                     size: 22,
                   ),
                 ],

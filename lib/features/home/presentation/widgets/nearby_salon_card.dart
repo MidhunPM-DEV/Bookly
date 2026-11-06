@@ -65,7 +65,7 @@ class NearbySalonCard extends StatelessWidget {
                           _Pill(
                             icon: Icons.location_on,
                             label: '${salon.distanceKm} km',
-                            background: Colors.white.withValues(alpha: 0.92),
+                            background: Colors.white.withValues(alpha: 0.94),
                             foreground: AppColors.ink,
                           ),
                           if (salon.verified) ...[
@@ -107,7 +107,7 @@ class NearbySalonCard extends StatelessWidget {
                             width: 8,
                             height: 8,
                             decoration: const BoxDecoration(
-                              color: AppColors.lime,
+                              color: AppColors.limeSoft,
                               shape: BoxShape.circle,
                             ),
                           ),

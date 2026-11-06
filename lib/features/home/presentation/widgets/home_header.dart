@@ -24,40 +24,44 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  color: AppColors.lime,
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                child: const Icon(
-                  Icons.auto_awesome,
-                  size: 16,
-                  color: AppColors.ink,
-                ),
-              ),
-              const SizedBox(width: 8),
               const Text(
-                'BOOKLY',
+                'Bookly',
                 style: TextStyle(
+                  color: AppColors.ink,
                   fontWeight: FontWeight.w800,
-                  fontSize: 20,
-                  letterSpacing: 0.4,
+                  fontSize: 24,
+                  letterSpacing: -0.5,
                 ),
               ),
               const Spacer(),
+              IconButton(
+                onPressed: onNotifications,
+                tooltip: 'Notifications',
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.surface,
+                  side: const BorderSide(color: Color(0xFFE2EAE5)),
+                ),
+                icon: Badge(
+                  smallSize: 7,
+                  backgroundColor: AppColors.openGreen,
+                  child: const Icon(
+                    Icons.notifications_none_rounded,
+                    color: AppColors.ink,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
               GestureDetector(
                 onTap: onProfile,
                 child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: AppColors.lime,
+                  radius: 19,
+                  backgroundColor: AppColors.limeSoft,
                   foregroundColor: AppColors.ink,
                   child: Text(
                     _initials(userName),
@@ -70,7 +74,7 @@ class HomeHeader extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,19 +83,9 @@ class HomeHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dateLabel,
+                      '$greeting, $userName',
                       style: const TextStyle(
-                        fontSize: 11.5,
-                        letterSpacing: 1.1,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.muted,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$greeting, $userName!',
-                      style: const TextStyle(
-                        fontSize: 28,
+                        fontSize: 26,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.8,
                         height: 1.15,
@@ -100,47 +94,36 @@ class HomeHeader extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: onNotifications,
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.surface,
-                  side: const BorderSide(color: Color(0xFFE6E3DE)),
-                  padding: const EdgeInsets.all(10),
-                ),
-                icon: const Icon(
-                  Icons.notifications_none_rounded,
-                  color: AppColors.ink,
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Row(
             children: [
-              const Icon(
-                Icons.location_on,
-                size: 18,
-                color: AppColors.accentGreen,
-              ),
+              const Icon(Icons.location_on, size: 18, color: AppColors.ink),
               const SizedBox(width: 4),
               Expanded(
-                child: Text(
-                  location,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: AppColors.mutedDark,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: onChangeLocation,
-                child: const Text(
-                  'Change',
-                  style: TextStyle(
-                    color: AppColors.accentGreen,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                child: GestureDetector(
+                  onTap: onChangeLocation,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          location,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                            color: AppColors.ink,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 3),
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 18,
+                        color: AppColors.ink,
+                      ),
+                    ],
                   ),
                 ),
               ),

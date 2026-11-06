@@ -2,7 +2,7 @@ import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/core/theme/app_colors.dart';
 import 'package:bookly/features/home/data/models/home_models.dart';
 import 'package:bookly/features/favorites/favorites_store.dart';
-import 'package:bookly/features/home/presentation/widgets/popular_place_card.dart';
+import 'package:bookly/features/explore/presentation/widgets/place_discovery_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -129,9 +129,8 @@ class _ExplorePageState extends State<ExplorePage> {
                 sliver: SliverGrid(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final place = places[index];
-                    return PopularPlaceCard(
+                    return PlaceDiscoveryCard(
                       place: place,
-                      width: double.infinity,
                       onTap: () => context.push(AppRoutes.business(place.id)),
                       isFavorite: FavoritesStore.instance.contains(place.id),
                       onFavorite: () =>
@@ -142,7 +141,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    mainAxisExtent: 310,
+                    mainAxisExtent: 300,
                   ),
                 ),
               ),

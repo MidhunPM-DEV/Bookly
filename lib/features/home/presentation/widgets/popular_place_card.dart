@@ -27,12 +27,12 @@ class PopularPlaceCard extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(22),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x16000000),
-              blurRadius: 18,
-              offset: Offset(0, 8),
+              color: Color(0x0D063D2E),
+              blurRadius: 16,
+              offset: Offset(0, 5),
             ),
           ],
         ),
@@ -44,7 +44,7 @@ class PopularPlaceCard extends StatelessWidget {
                 top: Radius.circular(22),
               ),
               child: SizedBox(
-                height: 142,
+                height: 174,
                 width: double.infinity,
                 child: Stack(
                   fit: StackFit.expand,
@@ -82,7 +82,7 @@ class PopularPlaceCard extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: 10,
+                      top: 12,
                       right: 10,
                       child: GestureDetector(
                         onTap: onFavorite,
@@ -101,7 +101,7 @@ class PopularPlaceCard extends StatelessWidget {
                     ),
                     Positioned(
                       right: 10,
-                      bottom: 10,
+                      bottom: 12,
                       child: _RatingPill(rating: place.rating),
                     ),
                   ],
@@ -109,7 +109,7 @@ class PopularPlaceCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 14, 15, 15),
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -119,7 +119,8 @@ class PopularPlaceCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
-                      fontSize: 16.5,
+                      fontSize: 18,
+                      color: AppColors.ink,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -129,11 +130,36 @@ class PopularPlaceCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: AppColors.mutedDark,
-                      fontSize: 12.5,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 13),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: place.tags.take(3).map((tag) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.limeSoft,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _prettyTag(tag),
+                          style: const TextStyle(
+                            color: AppColors.ink,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 14),
                   Row(
                     children: [
                       Expanded(
@@ -141,10 +167,10 @@ class PopularPlaceCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'STARTING FROM',
+                              'SERVICES FROM',
                               style: TextStyle(
                                 color: AppColors.muted,
-                                fontSize: 9,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 0.7,
                               ),
@@ -154,37 +180,31 @@ class PopularPlaceCard extends StatelessWidget {
                               '₹${place.startingPrice}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w800,
-                                fontSize: 15,
+                                fontSize: 19,
+                                color: AppColors.ink,
                               ),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Flexible(
-                        child: Container(
+                      FilledButton.icon(
+                        onPressed: onTap,
+                        icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+                        label: const Text('View details'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.ink,
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 7,
-                            vertical: 8,
+                            horizontal: 12,
+                            vertical: 10,
                           ),
-                          decoration: BoxDecoration(
-                            color: place.slotsOpen
-                                ? AppColors.limeSoft
-                                : AppColors.searchFill,
-                            borderRadius: BorderRadius.circular(12),
+                          textStyle: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
                           ),
-                          child: Text(
-                            place.slotsOpen ? 'Open today' : 'Details',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: place.slotsOpen
-                                  ? const Color(0xFF4A7A12)
-                                  : AppColors.mutedDark,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 9.5,
-                            ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
                           ),
                         ),
                       ),
@@ -197,6 +217,11 @@ class PopularPlaceCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _prettyTag(String tag) {
+    if (tag.isEmpty) return tag;
+    return '${tag[0].toUpperCase()}${tag.substring(1)}';
   }
 }
 

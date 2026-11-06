@@ -29,7 +29,7 @@ class HomeSearchBar extends StatelessWidget {
         height: 52,
         padding: const EdgeInsets.only(left: 16, right: 4),
         decoration: BoxDecoration(
-          color: AppColors.searchFill,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: const Color(0xFFE7E3DE)),
         ),
@@ -51,7 +51,7 @@ class HomeSearchBar extends StatelessWidget {
                 ),
                 decoration: const InputDecoration(
                   isDense: true,
-                  hintText: 'Search salons, gyms, clinics...',
+                  hintText: 'Search clinics, salons...',
                   hintStyle: TextStyle(
                     color: AppColors.muted,
                     fontSize: 14.5,
@@ -70,7 +70,10 @@ class HomeSearchBar extends StatelessWidget {
                 return IconButton(
                   tooltip: 'Clear search',
                   onPressed: onClear,
-                  icon: const Icon(Icons.close_rounded, color: AppColors.mutedDark),
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: AppColors.mutedDark,
+                  ),
                 );
               },
             ),

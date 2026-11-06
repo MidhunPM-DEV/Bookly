@@ -23,7 +23,7 @@ class CategoryChips extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                'CATEGORIES',
+                'EXPLORE SERVICES',
                 style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.2,
@@ -60,16 +60,22 @@ class CategoryChips extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: selected ? AppColors.ink : AppColors.surface,
+                    color: selected ? AppColors.ink : AppColors.limeSoft,
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(
-                      color: selected ? AppColors.ink : AppColors.chipOutline,
+                      color: selected ? AppColors.ink : AppColors.limeSoft,
                     ),
                   ),
                   child: Row(
                     children: [
+                      Icon(
+                        _categoryIcon(category.label),
+                        size: 16,
+                        color: selected ? Colors.white : AppColors.ink,
+                      ),
+                      const SizedBox(width: 7),
                       Text(
-                        category.label,
+                        _categoryLabel(category.label),
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
@@ -97,4 +103,19 @@ class CategoryChips extends StatelessWidget {
       ],
     );
   }
+
+  IconData _categoryIcon(String label) {
+    switch (label) {
+      case 'Clinics':
+        return Icons.local_hospital_outlined;
+      case 'Salons':
+        return Icons.content_cut_rounded;
+      case 'Spa':
+        return Icons.spa_outlined;
+      default:
+        return Icons.auto_awesome_outlined;
+    }
+  }
+
+  String _categoryLabel(String label) => label == 'Fitness' ? 'Style' : label;
 }
