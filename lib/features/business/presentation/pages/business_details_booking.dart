@@ -72,7 +72,7 @@ class _ServicesTab extends StatelessWidget {
       ),
       const SizedBox(height: 14),
       SizedBox(
-        height: 132,
+        height: 148,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: business.team.length,
