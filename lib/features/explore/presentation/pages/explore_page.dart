@@ -5,7 +5,7 @@ import 'package:bookly/features/favorites/favorites_store.dart';
 import 'package:bookly/features/explore/presentation/widgets/explore_category_filter.dart';
 import 'package:bookly/features/explore/presentation/widgets/explore_header.dart';
 import 'package:bookly/features/explore/presentation/widgets/explore_results_header.dart';
-import 'package:bookly/features/explore/presentation/widgets/explore_places_grid.dart';
+import 'package:bookly/features/explore/presentation/widgets/explore_places_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -69,7 +69,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 ),
               )
             else
-              ExplorePlacesGrid(
+              ExplorePlacesList(
                 places: places,
                 onPlaceTap: (place) =>
                     context.push(AppRoutes.business(place.id)),

@@ -40,6 +40,8 @@ class PopularPlace {
     required this.startingPrice,
     this.reviewCountLabel = '120+',
     this.slotsOpen = false,
+    this.nextAvailable,
+    this.verified = false,
     this.tags = const [],
   });
 
@@ -53,6 +55,8 @@ class PopularPlace {
   final int startingPrice;
   final String reviewCountLabel;
   final bool slotsOpen;
+  final String? nextAvailable;
+  final bool verified;
   final List<String> tags;
 
   bool matches(
@@ -167,6 +171,9 @@ abstract final class HomeMockData {
       rating: 4.9,
       startingPrice: 299,
       slotsOpen: true,
+      reviewCountLabel: '1.2k',
+      nextAvailable: '11:30 AM today',
+      verified: true,
       tags: ['salon', 'barber', 'hair', 'color', 'urban studio'],
     ),
     ...popular,
