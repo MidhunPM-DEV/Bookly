@@ -3,14 +3,12 @@ import 'package:bookly/core/router/app_routes.dart';
 import 'package:bookly/features/auth/auth_store.dart';
 import 'package:bookly/features/home/data/models/home_models.dart';
 import 'package:bookly/features/favorites/favorites_store.dart';
-import 'package:bookly/features/home/presentation/widgets/category_chips.dart';
+import 'package:bookly/features/home/presentation/widgets/home_discovery_slivers.dart';
 import 'package:bookly/features/home/presentation/widgets/home_header.dart';
 import 'package:bookly/features/home/presentation/widgets/home_search_bar.dart';
-import 'package:bookly/features/home/presentation/widgets/nearby_salon_card.dart';
-import 'package:bookly/features/home/presentation/widgets/popular_place_card.dart';
+import 'package:bookly/features/home/presentation/widgets/pinned_home_search_header.dart';
 import 'package:bookly/features/home/presentation/widgets/search_filter_sheet.dart';
 import 'package:bookly/features/home/presentation/widgets/search_results_list.dart';
-import 'package:bookly/features/home/presentation/widgets/section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -115,18 +113,15 @@ class _HomePageState extends State<HomePage> {
                     onProfile: () => _snack('Profile'),
                   ),
                 ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _PinnedSearchHeaderDelegate(
-                    child: HomeSearchBar(
-                      controller: _searchController,
-                      focusNode: _searchFocus,
-                      filterActive: _filters.isActive,
-                      onChanged: _onQueryChanged,
-                      onSubmitted: _onQueryChanged,
-                      onClear: _clearSearch,
-                      onFilter: _openFilters,
-                    ),
+                PinnedHomeSearchHeader(
+                  child: HomeSearchBar(
+                    controller: _searchController,
+                    focusNode: _searchFocus,
+                    filterActive: _filters.isActive,
+                    onChanged: _onQueryChanged,
+                    onSubmitted: _onQueryChanged,
+                    onClear: _clearSearch,
+                    onFilter: _openFilters,
                   ),
                 ),
                 if (_isSearching)
@@ -137,243 +132,22 @@ class _HomePageState extends State<HomePage> {
                       onPlaceTap: (place) => _openBusiness(place.id),
                     ),
                   )
-                else ...[
-                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                  SliverToBoxAdapter(
-                    child: _HomeSpotlightCard(
-                      onExplore: () => _openBusiness(HomeMockData.nearby.id),
-                    ),
+                else
+                  ...buildHomeDiscoverySlivers(
+                    selectedCategory: _selectedCategory,
+                    onCategorySelected: (index) =>
+                        setState(() => _selectedCategory = index),
+                    onExploreNearby: () =>
+                        _openBusiness(HomeMockData.nearby.id),
+                    onExplorePopular: () => _snack('Explore popular'),
+                    onPlaceTap: _openBusiness,
+                    onSeeAllNearby: () => _snack('See all nearby'),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                  SliverToBoxAdapter(
-                    child: CategoryChips(
-                      categories: HomeMockData.categories,
-                      selectedIndex: _selectedCategory,
-                      onSelected: (index) =>
-                          setState(() => _selectedCategory = index),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 28)),
-                  SliverToBoxAdapter(
-                    child: SectionHeader(
-                      title: 'Nearby services',
-                      action: 'See all',
-                      onAction: () => _snack('See all nearby'),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                  SliverToBoxAdapter(
-                    child: NearbySalonCard(
-                      salon: HomeMockData.nearby,
-                      isFavorite: FavoritesStore.instance.contains(
-                        HomeMockData.nearby.id,
-                      ),
-                      onFavorite: () => FavoritesStore.instance.toggle(
-                        HomeMockData.nearby.id,
-                      ),
-                      onView: () => _openBusiness(HomeMockData.nearby.id),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 30)),
-                  SliverToBoxAdapter(
-                    child: SectionHeader(
-                      title: 'Recommended for you',
-                      action: 'Explore',
-                      onAction: () => _snack('Explore popular'),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      final place = HomeMockData.popular[index];
-                      return Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          20,
-                          index == 0 ? 0 : 12,
-                          20,
-                          index == HomeMockData.popular.length - 1 ? 0 : 0,
-                        ),
-                        child: PopularPlaceCard(
-                          place: place,
-                          width: double.infinity,
-                          onTap: () => _openBusiness(place.id),
-                          isFavorite: FavoritesStore.instance.contains(
-                            place.id,
-                          ),
-                          onFavorite: () =>
-                              FavoritesStore.instance.toggle(place.id),
-                        ),
-                      );
-                    }, childCount: HomeMockData.popular.length),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 28)),
-                ],
               ],
             ),
           ),
         ),
       ),
     );
-  }
-}
-
-class _HomeSpotlightCard extends StatelessWidget {
-  const _HomeSpotlightCard({required this.onExplore});
-
-  final VoidCallback onExplore;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.fromLTRB(20, 18, 14, 14),
-      decoration: BoxDecoration(
-        color: AppColors.ink,
-        borderRadius: BorderRadius.circular(26),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A111111),
-            blurRadius: 18,
-            offset: Offset(0, 9),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -24,
-            top: -34,
-            child: Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                color: AppColors.limeSoft.withValues(alpha: 0.16),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            right: 42,
-            bottom: -62,
-            child: Container(
-              width: 130,
-              height: 130,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.limeSoft.withValues(alpha: 0.18),
-                  width: 18,
-                ),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.limeSoft,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      'BOOK YOUR MOMENT',
-                      style: TextStyle(
-                        color: AppColors.ink,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.auto_awesome_rounded,
-                    color: AppColors.limeSoft,
-                    size: 22,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
-              const SizedBox(
-                width: 250,
-                child: Text(
-                  'Your next good moment starts here.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    height: 1.16,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Find trusted places around you and book with confidence.',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 12,
-                  height: 1.45,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                onPressed: onExplore,
-                icon: const Icon(Icons.explore_outlined, size: 17),
-                label: const Text('Explore places'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AppColors.ink,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 11,
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w800,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PinnedSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
-  const _PinnedSearchHeaderDelegate({required this.child});
-
-  final Widget child;
-
-  @override
-  double get minExtent => 76;
-
-  @override
-  double get maxExtent => 76;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return ColoredBox(color: AppColors.background, child: child);
-  }
-
-  @override
-  bool shouldRebuild(covariant _PinnedSearchHeaderDelegate oldDelegate) {
-    return oldDelegate.child != child;
   }
 }
